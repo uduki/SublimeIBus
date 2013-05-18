@@ -120,11 +120,9 @@ class WindowLayout:
         cmd = ['xwininfo',
                '-display', os.environ.get('DISPLAY'),
                '-id', self.window_id]
-        env = {'PATH': os.environ.get('PATH', '')}
         out, err = subprocess.Popen(cmd,
                                     stdout=subprocess.PIPE,
-                                    stderr=subprocess.PIPE,
-                                    env=env).communicate()
+                                    stderr=subprocess.PIPE).communicate()
         output = out.decode('utf-8')
         if err != b'':
             logger.debug(err)
@@ -372,12 +370,9 @@ class IbusListener(sublime_plugin.EventListener):
 
         # get active X Window ID
         cmd = ['xprop', '-root', '_NET_ACTIVE_WINDOW']
-        env = {'PATH': os.environ.get('PATH', ''),
-               'DISPLAY': os.environ.get('DISPLAY')}
         out, err = subprocess.Popen(cmd,
                                     stdout=subprocess.PIPE,
-                                    stderr=subprocess.PIPE,
-                                    env=env).communicate()
+                                    stderr=subprocess.PIPE).communicate()
         if err == b'':
             m = re.search('(0x[\da-f]+)', out.decode('utf-8'))
             window_id = m.group(1)
